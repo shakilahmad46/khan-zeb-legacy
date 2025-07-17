@@ -5,6 +5,72 @@ import { Button } from '@/components/ui/button';
 import { BookOpen, Download, ExternalLink, FileText } from 'lucide-react';
 
 const Resources: React.FC = () => {
+  const [currentLang, setCurrentLang] = React.useState('en');
+
+  React.useEffect(() => {
+    const savedLang = localStorage.getItem('memorial-site-lang');
+    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
+
+  const getContent = (lang: string) => {
+    const content = {
+      en: {
+        title: "Resources",
+        subtitle: "Books, articles, documents, and materials related to Maulana Khan Zeb's life and work.",
+        bookInfo: "Book Information",
+        abstract: "Abstract",
+        articlesMedia: "Articles and Media Coverage",
+        educationalMaterials: "Educational Materials",
+        studyGuides: "Study Guides",
+        memorialMaterials: "Memorial Materials",
+        archiveCollections: "Archive Collections",
+        photoArchive: "Photo Archive",
+        speechRecordings: "Speech Recordings",
+        documentCollection: "Document Collection",
+        researchRequests: "Research Requests",
+        usageAttribution: "Usage and Attribution"
+      },
+      ur: {
+        title: "ذرائع",
+        subtitle: "مولانا خان زیب کی زندگی، کام اور میراث سے متعلق کتابیں، مضامین، دستاویزات اور مواد۔",
+        bookInfo: "کتاب کی معلومات",
+        abstract: "خلاصہ",
+        articlesMedia: "مضامین اور میڈیا کوریج",
+        educationalMaterials: "تعلیمی مواد",
+        studyGuides: "مطالعاتی گائیڈز",
+        memorialMaterials: "یادگاری مواد",
+        archiveCollections: "آرکائیو کلیکشنز",
+        photoArchive: "تصویری آرکائیو",
+        speechRecordings: "تقریری ریکارڈنگز",
+        documentCollection: "دستاویزی مجموعہ",
+        researchRequests: "تحقیقی درخواستیں",
+        usageAttribution: "استعمال اور حوالہ"
+      },
+      ps: {
+        title: "سرچینې",
+        subtitle: "د مولانا خان زیب د ژوند، کار، او میراث پورې اړوند کتابونه، مقالې، اسناد او مواد۔",
+        bookInfo: "د کتاب معلومات",
+        abstract: "لنډیز",
+        articlesMedia: "مقالې او د رسنیو پوښښ",
+        educationalMaterials: "زده کړیز مواد",
+        studyGuides: "د مطالعې لارښوونې",
+        memorialMaterials: "یادګارۍ مواد",
+        archiveCollections: "د آرشیف ټولګې",
+        photoArchive: "د انځورونو آرشیف",
+        speechRecordings: "د وینا ثبتونه",
+        documentCollection: "د اسنادو ټولګه",
+        researchRequests: "د څیړنې غوښتنې",
+        usageAttribution: "کارول او منسوبول"
+      }
+    };
+    return content[lang as keyof typeof content] || content.en;
+  };
+
+  const content = getContent(currentLang);
+  const isRTL = currentLang === 'ur' || currentLang === 'ps';
+
   const sources = [
     { key: "Dawn-10Jul2025", title: "ANP leader Maulana Khan Zeb gunned down in KP's Bajaur", url: "https://www.dawn.com/news/1923308/anp-leader-maulana-khan-zeb-gunned-down-in-kps-bajaur-police", type: "News Report" },
     { key: "Dawn-FIR", title: "FIR registered in Maulana Khan Zeb assassination", url: "https://www.dawn.com/news/1923530", type: "Investigation" },
@@ -17,13 +83,15 @@ const Resources: React.FC = () => {
   ];
 
   return (
-    <Layout>
+    <Layout currentPage="resources">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Resources</h1>
-            <p className="text-xl text-muted-foreground">
-              Books, articles, documents, and materials related to Maulana Khan Zeb's life and work.
+            <h1 className={`text-4xl font-bold text-foreground mb-4 ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.title}
+            </h1>
+            <p className={`text-xl text-muted-foreground ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.subtitle}
             </p>
           </header>
 

@@ -3,14 +3,64 @@ import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 
 const Peace: React.FC = () => {
+  const [currentLang, setCurrentLang] = React.useState('en');
+
+  React.useEffect(() => {
+    const savedLang = localStorage.getItem('memorial-site-lang');
+    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
+
+  const getContent = (lang: string) => {
+    const content = {
+      en: {
+        title: "Peace & Politics",
+        subtitle: "ANP cleric who mobilised mosques & community forums for anti-militancy peace marches across Bajaur.",
+        faithMeetsNationalism: "Faith Meets Secular Pashtun Nationalism",
+        grassrootsMarches: "Grassroots Peace Marches",
+        motherTongue: "Mother-Tongue Education",
+        legacyOfPeace: "Legacy of Peaceful Resistance",
+        amanPasoon: "Aman Pasoon (Peace Parade)",
+        sources: "Sources"
+      },
+      ur: {
+        title: "امن و سیاست",
+        subtitle: "ANP کے مذہبی رہنما جنہوں نے باجوڑ بھر میں عسکریت پسندی کے خلاف امن مارچ کے لیے مساجد اور کمیونٹی فورمز کو متحرک کیا۔",
+        faithMeetsNationalism: "عقیدہ اور سیکولر پشتون قوم پرستی کا ملاپ",
+        grassrootsMarches: "نچلی سطح پر امن مارچ",
+        motherTongue: "مادری زبان کی تعلیم",
+        legacyOfPeace: "پرامن مزاحمت کی میراث",
+        amanPasoon: "امن پسون (امن پریڈ)",
+        sources: "ذرائع"
+      },
+      ps: {
+        title: "امن او سیاست",
+        subtitle: "د ANP مذهبي مشر چې په باجوړ کې یې د تروریزم ضد د سولې لاریونونو لپاره جومات او د ټولنې فورمونه فعال کړل۔",
+        faithMeetsNationalism: "عقیده او سیکولر پښتون ملتپالنه",
+        grassrootsMarches: "د خلکو د سولې لاریونونه",
+        motherTongue: "د میندنۍ ژبې زده کړه",
+        legacyOfPeace: "د سوله ایزه مقاومت میراث",
+        amanPasoon: "امن پسون (د سولې لاریون)",
+        sources: "سرچینې"
+      }
+    };
+    return content[lang as keyof typeof content] || content.en;
+  };
+
+  const content = getContent(currentLang);
+  const isRTL = currentLang === 'ur' || currentLang === 'ps';
+
   return (
-    <Layout>
+    <Layout currentPage="peace">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Peace & Politics</h1>
-            <p className="text-xl text-muted-foreground">
-              ANP cleric who mobilised mosques & community forums for anti-militancy peace marches across Bajaur.
+            <h1 className={`text-4xl font-bold text-foreground mb-4 ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.title}
+            </h1>
+            <p className={`text-xl text-muted-foreground ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.subtitle}
             </p>
           </header>
 

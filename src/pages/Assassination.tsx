@@ -4,14 +4,58 @@ import { Card } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
 
 const Assassination: React.FC = () => {
+  const [currentLang, setCurrentLang] = React.useState('en');
+
+  React.useEffect(() => {
+    const savedLang = localStorage.getItem('memorial-site-lang');
+    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
+
+  const getContent = (lang: string) => {
+    const content = {
+      en: {
+        title: "Assassination",
+        subtitle: "Killed Jul 10, 2025 in targeted gun attack at Shindai Mor near Khar while mobilising for Jul 13 peace march.",
+        attackDetails: "Attack Details",
+        investigation: "Investigation",
+        community: "Community Response",
+        sources: "Sources"
+      },
+      ur: {
+        title: "شہادت",
+        subtitle: "10 جولائی 2025 کو 13 جولائی کے امن مارچ کے لیے تیاری کرتے وقت کھر کے قریب شندائی مور میں ہدف بندی شدہ بندوق کے حملے میں شہید۔",
+        attackDetails: "حملے کی تفصیلات",
+        investigation: "تحقیقات",
+        community: "کمیونٹی کا ردعمل",
+        sources: "ذرائع"
+      },
+      ps: {
+        title: "شهادت",
+        subtitle: "د ۲۰۲۵ کال د جولای په ۱۰ د جولای د ۱۳ د سولې لاریون لپاره چمتووالی پر مهال د خار څخه نږدې په شندي مور کې د هدفي بریدونو په ترڅ کې شهید شو۔",
+        attackDetails: "د برید توضیحات",
+        investigation: "پلټنه",
+        community: "د ټولنې غبرګون",
+        sources: "سرچینې"
+      }
+    };
+    return content[lang as keyof typeof content] || content.en;
+  };
+
+  const content = getContent(currentLang);
+  const isRTL = currentLang === 'ur' || currentLang === 'ps';
+
   return (
-    <Layout>
+    <Layout currentPage="assassination">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Assassination</h1>
-            <p className="text-xl text-muted-foreground">
-              Killed Jul 10, 2025 in targeted gun attack at Shindai Mor near Khar while mobilising for Jul 13 peace march.
+            <h1 className={`text-4xl font-bold text-foreground mb-4 ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.title}
+            </h1>
+            <p className={`text-xl text-muted-foreground ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.subtitle}
             </p>
           </header>
 

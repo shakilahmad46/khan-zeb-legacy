@@ -3,14 +3,64 @@ import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 
 const Scholarship: React.FC = () => {
+  const [currentLang, setCurrentLang] = React.useState('en');
+
+  React.useEffect(() => {
+    const savedLang = localStorage.getItem('memorial-site-lang');
+    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
+
+  const getContent = (lang: string) => {
+    const content = {
+      en: {
+        title: "Scholarship",
+        subtitle: "Author of the definitive Pashto history 'Bajaur Da Treekh Pa Rana Kay'—a richly sourced 438-page cultural survey.",
+        bookTitle: "Bajaur Da Treekh Pa Rana Kay",
+        bookDetails: "Book Details",
+        significance: "Significance",
+        contentOverview: "Content Overview",
+        impact: "Impact",
+        sources: "Sources"
+      },
+      ur: {
+        title: "علمی کام",
+        subtitle: "حتمی پشتو تاریخ 'باجوڑ دا تریخ پہ رنا کے' کے مصنف—ایک بھرپور 438 صفحات کا ثقافتی جائزہ۔",
+        bookTitle: "باجوڑ دا تریخ پہ رنا کے",
+        bookDetails: "کتاب کی تفصیلات",
+        significance: "اہمیت",
+        contentOverview: "مواد کا جائزہ",
+        impact: "اثرات",
+        sources: "ذرائع"
+      },
+      ps: {
+        title: "علمي کار",
+        subtitle: "د باجوړ د 'باجوړ دا تاریخ په رڼا کې' د حتمي پښتو تاریخ لیکوال—یوه بډایه 438 مخونو کلتوري سروې۔",
+        bookTitle: "باجوړ دا تاریخ په رڼا کې",
+        bookDetails: "د کتاب توضیحات",
+        significance: "اهمیت",
+        contentOverview: "د منځپانګې کتنه",
+        impact: "اغیزې",
+        sources: "سرچینې"
+      }
+    };
+    return content[lang as keyof typeof content] || content.en;
+  };
+
+  const content = getContent(currentLang);
+  const isRTL = currentLang === 'ur' || currentLang === 'ps';
+
   return (
-    <Layout>
+    <Layout currentPage="scholarship">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Scholarship</h1>
-            <p className="text-xl text-muted-foreground">
-              Author of the definitive Pashto history 'Bajaur Da Treekh Pa Rana Kay'—a richly sourced 438-page cultural survey.
+            <h1 className={`text-4xl font-bold text-foreground mb-4 ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.title}
+            </h1>
+            <p className={`text-xl text-muted-foreground ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.subtitle}
             </p>
           </header>
 

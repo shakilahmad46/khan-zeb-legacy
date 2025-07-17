@@ -4,14 +4,67 @@ import { Card } from '@/components/ui/card';
 import { Heart, Flag } from 'lucide-react';
 
 const Reaction: React.FC = () => {
+  const [currentLang, setCurrentLang] = React.useState('en');
+
+  React.useEffect(() => {
+    const savedLang = localStorage.getItem('memorial-site-lang');
+    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
+
+  const getContent = (lang: string) => {
+    const content = {
+      en: {
+        title: "National Response & Mourning",
+        subtitle: "National grief; ANP 3-day mourning; PM Shehbaz praised him as a 'staunch advocate for peace'; huge funeral in Nawagai.",
+        pmTribute: "Prime Minister's Tribute",
+        anpResponse: "ANP Leadership Response",
+        civilSociety: "Civil Society & Rights Groups",
+        communityMourning: "Community Mourning",
+        mediaCoverage: "Media Coverage",
+        lastingImpact: "Lasting Impact",
+        sources: "Sources"
+      },
+      ur: {
+        title: "قومی ردعمل اور سوگ",
+        subtitle: "قومی غم؛ ANP کا 3 دن کا سوگ؛ وزیراعظم شہباز نے انہیں 'امن کا مضبوط وکیل' قرار دیا؛ نواگئی میں بڑا جنازہ۔",
+        pmTribute: "وزیراعظم کا خراج تحسین",
+        anpResponse: "ANP قیادت کا ردعمل",
+        civilSociety: "سول سوسائٹی اور حقوق کے گروپس",
+        communityMourning: "کمیونٹی کا سوگ",
+        mediaCoverage: "میڈیا کوریج",
+        lastingImpact: "دیرپا اثرات",
+        sources: "ذرائع"
+      },
+      ps: {
+        title: "ملي غبرګون او ماتم",
+        subtitle: "ملي غم؛ د ANP د ۳ ورځو ماتم؛ لومړي وزیر شهباز هغه د 'د سولې کلک مدافع' وباله؛ په نواګۍ کې لویه جنازه۔",
+        pmTribute: "د لومړي وزیر درناوی",
+        anpResponse: "د ANP مشرتابه غبرګون",
+        civilSociety: "مدني ټولنه او د حقونو ډلې",
+        communityMourning: "د ټولنې ماتم",
+        mediaCoverage: "د رسنیو پوښښ",
+        lastingImpact: "اوږدمهاله اغیزې",
+        sources: "سرچینې"
+      }
+    };
+    return content[lang as keyof typeof content] || content.en;
+  };
+
+  const content = getContent(currentLang);
+  const isRTL = currentLang === 'ur' || currentLang === 'ps';
+
   return (
-    <Layout>
+    <Layout currentPage="reaction">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">National Response & Mourning</h1>
-            <p className="text-xl text-muted-foreground">
-              National grief; ANP 3-day mourning; PM Shehbaz praised him as a 'staunch advocate for peace'; huge funeral in Nawagai.
+            <h1 className={`text-4xl font-bold text-foreground mb-4 ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.title}
+            </h1>
+            <p className={`text-xl text-muted-foreground ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.subtitle}
             </p>
           </header>
 

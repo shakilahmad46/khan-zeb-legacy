@@ -5,6 +5,45 @@ import { Button } from '@/components/ui/button';
 import { Quote, Share, Download } from 'lucide-react';
 
 const Quotes: React.FC = () => {
+  const [currentLang, setCurrentLang] = React.useState('en');
+
+  React.useEffect(() => {
+    const savedLang = localStorage.getItem('memorial-site-lang');
+    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
+
+  const getContent = (lang: string) => {
+    const content = {
+      en: {
+        title: "Quotes",
+        subtitle: "Tributes and reflections on Maulana Khan Zeb's life and legacy from national leaders and organizations.",
+        shareMessages: "Share These Messages",
+        additionalTributes: "Additional Tributes",
+        shareGuidelines: "Share Guidelines"
+      },
+      ur: {
+        title: "اقتباسات",
+        subtitle: "قومی رہنماؤں اور تنظیموں کی جانب سے مولانا خان زیب کی زندگی اور میراث پر خراج تحسین اور تاثرات۔",
+        shareMessages: "یہ پیغامات شیئر کریں",
+        additionalTributes: "اضافی خراج تحسین",
+        shareGuidelines: "شیئر کرنے کے رہنمائی"
+      },
+      ps: {
+        title: "اقتباسونه",
+        subtitle: "د ملي مشرانو او سازمانونو لخوا د مولانا خان زیب د ژوند او میراث په اړه درناوی او انعکاسونه۔",
+        shareMessages: "دا پیغامونه شریک کړئ",
+        additionalTributes: "اضافي درناوی",
+        shareGuidelines: "د شریکولو لارښوونې"
+      }
+    };
+    return content[lang as keyof typeof content] || content.en;
+  };
+
+  const content = getContent(currentLang);
+  const isRTL = currentLang === 'ur' || currentLang === 'ps';
+
   const quotes = [
     {
       quote: "Grieved to learn about the assassination of Maulana Khan Zeb… a staunch advocate for peace.",
@@ -27,13 +66,15 @@ const Quotes: React.FC = () => {
   ];
 
   return (
-    <Layout>
+    <Layout currentPage="quotes">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Quotes</h1>
-            <p className="text-xl text-muted-foreground">
-              Tributes and reflections on Maulana Khan Zeb's life and legacy from national leaders and organizations.
+            <h1 className={`text-4xl font-bold text-foreground mb-4 ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.title}
+            </h1>
+            <p className={`text-xl text-muted-foreground ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.subtitle}
             </p>
           </header>
 

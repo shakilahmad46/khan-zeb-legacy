@@ -5,14 +5,64 @@ import { Button } from '@/components/ui/button';
 import { BookOpen, Users, Heart, Archive } from 'lucide-react';
 
 const Legacy: React.FC = () => {
+  const [currentLang, setCurrentLang] = React.useState('en');
+
+  React.useEffect(() => {
+    const savedLang = localStorage.getItem('memorial-site-lang');
+    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
+
+  const getContent = (lang: string) => {
+    const content = {
+      en: {
+        title: "Legacy",
+        subtitle: "Continue his mission: education, inter-tribal unity, nonviolent struggle for rights in Pakistan's borderlands.",
+        mission: "The Mission Continues",
+        actions: "Take Action",
+        reading: "Start a Reading Circle",
+        education: "Support Mother-Tongue Education",
+        peace: "Join Peace Marches",
+        heritage: "Document Local Heritage"
+      },
+      ur: {
+        title: "وراثت",
+        subtitle: "ان کے مشن کو جاری رکھیں: تعلیم، قبائلی اتحاد، پاکستان کے سرحدی علاقوں میں حقوق کے لیے عدم تشدد کی جدوجہد۔",
+        mission: "مشن جاری ہے",
+        actions: "عمل کریں",
+        reading: "مطالعاتی حلقہ شروع کریں",
+        education: "مادری زبان کی تعلیم کی حمایت کریں",
+        peace: "امن مارچ میں شامل ہوں",
+        heritage: "مقامی ورثے کو محفوظ کریں"
+      },
+      ps: {
+        title: "میراث",
+        subtitle: "د هغه ماموریت ته دوام ورکړئ: زده کړه، د قبایلو اتحاد، د پاکستان په پولو کې د حقونو لپاره غیر تشدد مبارزه۔",
+        mission: "ماموریت دوام لري",
+        actions: "عمل وکړئ",
+        reading: "د لوستلو حلقه پیل کړئ",
+        education: "د میندنۍ ژبې زده کړو ملاتړ وکړئ",
+        peace: "د سولې په لاریونونو کې برخه واخلئ",
+        heritage: "سیمه ایز میراث مستند کړئ"
+      }
+    };
+    return content[lang as keyof typeof content] || content.en;
+  };
+
+  const content = getContent(currentLang);
+  const isRTL = currentLang === 'ur' || currentLang === 'ps';
+
   return (
-    <Layout>
+    <Layout currentPage="legacy">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Legacy</h1>
-            <p className="text-xl text-muted-foreground">
-              Continue his mission: education, inter-tribal unity, nonviolent struggle for rights in Pakistan's borderlands.
+            <h1 className={`text-4xl font-bold text-foreground mb-4 ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.title}
+            </h1>
+            <p className={`text-xl text-muted-foreground ${isRTL ? 'rtl font-urdu' : ''}`}>
+              {content.subtitle}
             </p>
           </header>
 
