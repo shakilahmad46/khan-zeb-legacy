@@ -4,15 +4,7 @@ import HeroSection from '../components/HeroSection';
 import QuickFacts from '../components/QuickFacts';
 import { Heart, BookOpen, Users } from 'lucide-react';
 
-const Index = () => {
-  const [currentLang, setCurrentLang] = React.useState('en');
-
-  React.useEffect(() => {
-    const savedLang = localStorage.getItem('memorial-site-lang');
-    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
-      setCurrentLang(savedLang);
-    }
-  }, []);
+const Index = ({ currentLang = 'en' }: { currentLang?: string }) => {
 
   const getContent = (lang: string) => {
     const content = {

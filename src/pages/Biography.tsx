@@ -2,15 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import { Calendar, MapPin, GraduationCap, Users } from 'lucide-react';
 
-const Biography = () => {
-  const [currentLang, setCurrentLang] = React.useState('en');
-
-  React.useEffect(() => {
-    const savedLang = localStorage.getItem('memorial-site-lang');
-    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
-      setCurrentLang(savedLang);
-    }
-  }, []);
+const Biography = ({ currentLang = 'en' }: { currentLang?: string }) => {
 
   const getContent = (lang: string) => {
     const content = {

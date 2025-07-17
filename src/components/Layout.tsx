@@ -5,17 +5,30 @@ import Navigation from './Navigation';
 interface LayoutProps {
   children: React.ReactNode;
   currentPage?: string;
+  currentLang?: string;
+  onLanguageChange?: (lang: string) => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, currentPage = 'home' }) => {
-  const [currentLang, setCurrentLang] = useState('en');
+const Layout: React.FC<LayoutProps> = ({ 
+  children, 
+  currentPage = 'home',
+  currentLang: propCurrentLang,
+  onLanguageChange: propOnLanguageChange
+}) => {
+  const [internalCurrentLang, setInternalCurrentLang] = useState('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Use prop values if provided, otherwise use internal state
+  const currentLang = propCurrentLang || internalCurrentLang;
+  const onLanguageChange = propOnLanguageChange || setInternalCurrentLang;
+
   useEffect(() => {
-    // Load language preference from localStorage
-    const savedLang = localStorage.getItem('memorial-site-lang');
-    if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
-      setCurrentLang(savedLang);
+    // Load language preference from localStorage only if no prop is provided
+    if (!propCurrentLang) {
+      const savedLang = localStorage.getItem('memorial-site-lang');
+      if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
+        setInternalCurrentLang(savedLang);
+      }
     }
 
     // Add Google Fonts for multilingual support
@@ -25,13 +38,17 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage = 'home' }) => {
     document.head.appendChild(link);
 
     return () => {
-      document.head.removeChild(link);
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
     };
-  }, []);
+  }, [propCurrentLang]);
 
   const handleLanguageChange = (lang: string) => {
-    setCurrentLang(lang);
-    localStorage.setItem('memorial-site-lang', lang);
+    onLanguageChange(lang);
+    if (!propCurrentLang) {
+      localStorage.setItem('memorial-site-lang', lang);
+    }
     setIsMenuOpen(false);
   };
 
@@ -87,7 +104,9 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage = 'home' }) => {
 
       {/* Main Content */}
       <main id="main-content" role="main">
-        {children}
+        {React.isValidElement(children) 
+          ? React.cloneElement(children as React.ReactElement, { currentLang, onLanguageChange: handleLanguageChange })
+          : children}
       </main>
 
       {/* Footer */}
