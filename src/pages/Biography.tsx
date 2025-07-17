@@ -1,8 +1,10 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import Layout from '../components/Layout';
 import { Calendar, MapPin, GraduationCap, Users } from 'lucide-react';
 
-const Biography = ({ currentLang = 'en' }: { currentLang?: string }) => {
+const Biography = () => {
+  const { currentLang } = useLanguage();
 
   const getContent = (lang: string) => {
     const content = {

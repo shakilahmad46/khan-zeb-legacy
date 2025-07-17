@@ -1,36 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import LanguageToggle from './LanguageToggle';
 import Navigation from './Navigation';
 
 interface LayoutProps {
   children: React.ReactNode;
   currentPage?: string;
-  currentLang?: string;
-  onLanguageChange?: (lang: string) => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ 
-  children, 
-  currentPage = 'home',
-  currentLang: propCurrentLang,
-  onLanguageChange: propOnLanguageChange
-}) => {
-  const [internalCurrentLang, setInternalCurrentLang] = useState('en');
+const Layout: React.FC<LayoutProps> = ({ children, currentPage = 'home' }) => {
+  const { currentLang, setCurrentLang } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Use prop values if provided, otherwise use internal state
-  const currentLang = propCurrentLang || internalCurrentLang;
-  const onLanguageChange = propOnLanguageChange || setInternalCurrentLang;
-
   useEffect(() => {
-    // Load language preference from localStorage only if no prop is provided
-    if (!propCurrentLang) {
-      const savedLang = localStorage.getItem('memorial-site-lang');
-      if (savedLang && ['en', 'ur', 'ps'].includes(savedLang)) {
-        setInternalCurrentLang(savedLang);
-      }
-    }
-
     // Add Google Fonts for multilingual support
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap';
@@ -42,13 +24,10 @@ const Layout: React.FC<LayoutProps> = ({
         document.head.removeChild(link);
       }
     };
-  }, [propCurrentLang]);
+  }, []);
 
   const handleLanguageChange = (lang: string) => {
-    onLanguageChange(lang);
-    if (!propCurrentLang) {
-      localStorage.setItem('memorial-site-lang', lang);
-    }
+    setCurrentLang(lang);
     setIsMenuOpen(false);
   };
 
@@ -104,9 +83,7 @@ const Layout: React.FC<LayoutProps> = ({
 
       {/* Main Content */}
       <main id="main-content" role="main">
-        {React.isValidElement(children) 
-          ? React.cloneElement(children as React.ReactElement, { currentLang, onLanguageChange: handleLanguageChange })
-          : children}
+        {children}
       </main>
 
       {/* Footer */}

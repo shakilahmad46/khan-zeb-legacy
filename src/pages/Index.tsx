@@ -1,10 +1,12 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import Layout from '../components/Layout';
 import HeroSection from '../components/HeroSection';
 import QuickFacts from '../components/QuickFacts';
 import { Heart, BookOpen, Users } from 'lucide-react';
 
-const Index = ({ currentLang = 'en' }: { currentLang?: string }) => {
+const Index = () => {
+  const { currentLang } = useLanguage();
 
   const getContent = (lang: string) => {
     const content = {
