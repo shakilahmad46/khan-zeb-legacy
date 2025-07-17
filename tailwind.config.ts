@@ -26,7 +26,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					glow: 'hsl(var(--primary-glow))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -62,6 +63,29 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			fontSize: {
+				'hero': 'var(--font-size-hero)',
+				'heading': 'var(--font-size-heading)',
+				'subheading': 'var(--font-size-subheading)'
+			},
+			fontFamily: {
+				'urdu': ['Noto Naskh Arabic', 'Times New Roman', 'serif'],
+				'pashto': ['Noto Naskh Arabic', 'Times New Roman', 'serif'],
+			},
+			backgroundImage: {
+				'hero-gradient': 'var(--hero-gradient)',
+				'peaceful-gradient': 'var(--peaceful-gradient)',
+				'sand-gradient': 'var(--sand-gradient)'
+			},
+			boxShadow: {
+				'gentle': 'var(--shadow-gentle)',
+				'memorial': 'var(--shadow-memorial)',
+				'warm': 'var(--shadow-warm)'
+			},
+			transitionTimingFunction: {
+				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+				'gentle': 'ease-out'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
